@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<window-width>1280</window-width>
+	<window-height>720</window-height>
+	<display-mode>windowed</display-mode>
+	<resizable>true</resizable>
+    <renderer-acceleration>hardware</renderer-acceleration>
+	<vsync>on</vsync>
+    <data-file>data.xml</data-file>
+</config>
