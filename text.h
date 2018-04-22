@@ -20,16 +20,21 @@
 
 using namespace std;
 
+enum Alignment {left = 0, center = 1, right = 2};
+
 class Text {
 	bool successfull_load = true;
 	string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ";
 	map<string, map<char, SDL_Texture*>> chars_map;
     Data* data;
+    int padding_left, padding_right, padding_up, padding_down;
+    Alignment align;
 public:
 	int GenerateCharacterMap(SDL_Renderer*);
 	void Render(SDL_Renderer*,string,int,int,string,SDL_Color);
+    int GetAlignment() { return align; }
 
-	Text(Data* _data) { data = _data; }
+	Text(Data* _data);
 	virtual ~Text();
 };
 

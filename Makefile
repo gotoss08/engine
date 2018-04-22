@@ -29,3 +29,6 @@ text.o: text.cpp
 
 util.o: util.cpp
 	$(COMPILE) util.cpp
+
+clean:
+	rm $(OBJ_NAME) $(OBJS)

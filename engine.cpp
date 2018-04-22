@@ -57,6 +57,7 @@ int Engine::Init(string title) {
 
 	/* character maps generation */
 	text = new Text(data);
+	cout << "alignement: " << text->GetAlignment() << endl;
 	if (text->GenerateCharacterMap(renderer)) {
 		SDL_Log("Unable to generate characters map.");
 		successfull_load = false;
@@ -111,7 +112,7 @@ int Engine::Loop(int _fps, int _ups) {
 
 		if (duration_cast<seconds>(clock::now() - timer).count() >= 1) {
 			SDL_Log("frames: %d, ticks: %d | per second\n", frames, ticks);
-			fps_text = to_string(frames) + "{{text_color=white}}fps | {{color=2,25,255,1}}" + to_string(duration_cast<milliseconds>(frame_render_time).count()) + "{{color=236,208,12,5}}ms frame render time";
+			fps_text = "{{color_name=green}}" + to_string(frames) + "{{color_name=white}}{{font=debug_font2}}fps | {{color_name=green}}{{font=default}}" + to_string(duration_cast<milliseconds>(frame_render_time).count()) + "{{color=255,255,255,255}}ms {{font=debug_font3}}frame{{font=default}} render{{newline}} time";
 
 			timer = clock::now();
 			ticks = 0;
