@@ -26,10 +26,6 @@ int Text::GenerateCharacterMap(SDL_Renderer* renderer) {
 	else return -1;
 }
 
-void render_text(SDL_Renderer* renderer, string font_name, int x, int y, string text, SDL_Color color) {
-
-}
-
 void Text::Render(SDL_Renderer* renderer, string font_name, int x, int y, string text, SDL_Color color) {
 	map<int,SDL_Color> text_color_map;
 
@@ -124,7 +120,6 @@ void Text::Render(SDL_Renderer* renderer, string font_name, int x, int y, string
 				}
 
 				// SDL_Log("final color: (%d,%d,%d,%d)\n", (int) tmp_color.r, (int) tmp_color.g, (int) tmp_color.b, (int) tmp_color.a);
-
 				cur_color = tmp_color;
 			}
 		} else if (attr_name_str == "color_name") {
@@ -147,4 +142,3 @@ Text::~Text() {
 	for (const auto& kv1 : chars_map)
 		for (const auto& kv2 : kv1.second) SDL_DestroyTexture(kv2.second);
 }
-
