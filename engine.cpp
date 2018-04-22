@@ -56,7 +56,7 @@ int Engine::Init(string title) {
 	}
 
 	/* character maps generation */
-	text = new Text(data->GetFonts());
+	text = new Text(data);
 	if (text->GenerateCharacterMap(renderer)) {
 		SDL_Log("Unable to generate characters map.");
 		successfull_load = false;
@@ -111,7 +111,7 @@ int Engine::Loop(int _fps, int _ups) {
 
 		if (duration_cast<seconds>(clock::now() - timer).count() >= 1) {
 			SDL_Log("frames: %d, ticks: %d | per second\n", frames, ticks);
-			fps_text = to_string(frames) + "{{255,255,255,150}}fps | {{236,208,120,255}}" + to_string(duration_cast<milliseconds>(frame_render_time).count()) + "{{255,255,255,150}}ms frame render time";
+			fps_text = to_string(frames) + "{{text_color=white}}fps | {{color=2,25,255,1}}" + to_string(duration_cast<milliseconds>(frame_render_time).count()) + "{{color=236,208,12,5}}ms frame render time";
 
 			timer = clock::now();
 			ticks = 0;

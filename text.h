@@ -15,6 +15,7 @@
 #include <map>
 #include <vector>
 
+#include "data.h"
 #include "util.h"
 
 using namespace std;
@@ -23,12 +24,12 @@ class Text {
 	bool successfull_load = true;
 	string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ";
 	map<string, map<char, SDL_Texture*>> chars_map;
-	map<string, TTF_Font*> fonts_map;
+    Data* data;
 public:
 	int GenerateCharacterMap(SDL_Renderer*);
 	void Render(SDL_Renderer*,string,int,int,string,SDL_Color);
 
-	Text(map<string, TTF_Font*> _fonts_map) { fonts_map = _fonts_map; };
+	Text(Data* _data) { data = _data; }
 	virtual ~Text();
 };
 

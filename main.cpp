@@ -25,5 +25,6 @@ int main(int argc, char* argv[]) {
 
 	engine->Loop(60,60);
 
+    system("PAUSE");
 	return 0;
 }

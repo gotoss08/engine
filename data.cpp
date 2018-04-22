@@ -34,12 +34,19 @@ int Data::Load(string data_doc_path) {
 		load_font(font_name, font_path, font_size);
 	}
 
+	xml_node colors_node = data_doc.child("colors");
+	for (xml_node color : colors_node.children()) {
+		string color_name = color.attribute("name").as_string();
+		Uint8 r = color.attribute("r").as_int();
+		Uint8 g = color.attribute("g").as_int();
+		Uint8 b = color.attribute("b").as_int();
+		Uint8 a = color.attribute("a").as_int();
+
+		colors_map.insert(make_pair(color_name, SDL_Color{r, g, b, a}));
+	}
+
 	if (successfull_load) return 0;
 	else return -1;
-}
-
-TTF_Font* Data::Font(string font_name) {
-	return fonts_map[font_name];
 }
 
 Data::Data() {}
