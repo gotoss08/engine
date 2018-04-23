@@ -11,7 +11,7 @@
 #include <string>
 #include <iostream>
 #include <map>
-#include "pugixml.hpp"
+#include "libs/pugixml.hpp"
 
 class Config {
 private:

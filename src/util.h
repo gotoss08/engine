@@ -8,8 +8,9 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-#include <string>
 #include <chrono>
+#include <string>
+#include <iostream>
 
 bool is_number(const std::string&);
 
@@ -19,6 +20,12 @@ class Timer {
 public:
 	void start();
 	int stop();
+};
+
+class EngineLogger {
+public:
+	void Log(std::string);
+	void Error();
 };
 
 #endif /* UTIL_H_ */

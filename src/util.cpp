@@ -19,3 +19,10 @@ int Timer::stop() {
 	return std::chrono::duration_cast<std::chrono::nanoseconds>((clock.now() - start_tp)).count();
 }
 
+void EngineLogger::Log(std::string text) {
+	std::cout << text << std::endl;
+}
+
+void EngineLogger::Error() {
+
+}

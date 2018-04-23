@@ -1,34 +1,25 @@
-OBJS=pugixml.o util.o config.o data.o text_renderer.o engine.o main.o
-CC=g++
-CFLAGS=-O0 -g3 -Wall -mconsole -mwindows -static-libgcc -m64
-LIKER_FLAGS=-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf
+export CC=g++
+export COMPILER_FLAGS=-O0 -g3 -Wall -mconsole -mwindows -static-libgcc -m64
+export LIKER_FLAGS=-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf
+
 OBJ_NAME = bin/engine64.exe
 
-COMPILE=$(CC) $(CFLAGS) -c
+export TRANSLATE_TO_OBJ=$(CC) $(COMPILER_FLAGS) -c
 
-engine: $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) -o $(OBJ_NAME) $(LIKER_FLAGS)
+all: libs engine
+	$(CC) -o $(OBJ_NAME) src/*.o src/libs/*.o $(LIKER_FLAGS)
 
-pugixml.o: pugixml.cpp
-	$(COMPILE) pugixml.cpp
+engine:
+	$(MAKE) -C src
 
-util.o: util.cpp
-	$(COMPILE) util.cpp
+libs:
+	$(MAKE) -C src/libs
 
-config.o: config.cpp
-	$(COMPILE) config.cpp
-
-data.o: data.cpp
-	$(COMPILE) data.cpp
-
-text_renderer.o: text_renderer.cpp
-	$(COMPILE) text_renderer.cpp
-
-engine.o: engine.cpp
-	$(COMPILE) engine.cpp
-
-main.o: main.cpp
-	$(COMPILE) main.cpp
+clean-all: clean clean-libs
 
 clean:
-	rm $(OBJ_NAME) $(OBJS)
+	$(MAKE) -C src clean
+	rm bin/engine64.exe
+
+clean-libs:
+	$(MAKE) -C src/libs clean 

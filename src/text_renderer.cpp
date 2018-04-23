@@ -37,7 +37,18 @@ int TextRenderer::GenerateCharacterMap(SDL_Renderer* renderer) {
 }
 
 void TextRenderer::Render(SDL_Renderer* renderer, std::string font_name, int x, int y, std::string text, SDL_Color color) {
-	std::map<int, SDL_Color> text_color_map;
+	// std::vector<std::pair<int, std::string>> tags_vector;
+
+	// some ${text and another text
+
+	// size_t tag_cursor_pos = 0, open_tag_pos, close_tag_pos;
+	// while ((open_tag_pos = text.find_first_of("${", tag_cursor_pos)) != std::string::npos) {
+	// 	tag_cursor_pos = open_tag_pos;
+	// 	close_tag_pos = text.find_first_of("}", tag_cursor_pos);
+	// 	if (close_tag_pos == std::string::npos) {
+	// 		SDL_Log("");
+	// 	}
+	// }
 
 	SDL_Color cur_color = color;
 	std::string cur_font_name = font_name;
