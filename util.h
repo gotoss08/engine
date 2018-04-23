@@ -11,13 +11,11 @@
 #include <string>
 #include <chrono>
 
-using namespace std::chrono;
-
 bool is_number(const std::string&);
 
 class Timer {
-	high_resolution_clock clock;
-	high_resolution_clock::time_point start_tp;
+	std::chrono::high_resolution_clock clock;
+	std::chrono::high_resolution_clock::time_point start_tp;
 public:
 	void start();
 	int stop();

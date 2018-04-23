@@ -7,11 +7,12 @@
 
 #include "engine.h"
 
-int Engine::Init(string title) {
-	config.Load();
+int Engine::Init(std::string title) {
+	config = new Config();
+	config->Load();
 
-	Engine::width = is_number(config["window-width"]) ? stoi(config["window-width"].c_str()) : 640;
-	Engine::height = is_number(config["window-height"]) ? stoi(config["window-height"].c_str()) : 480;
+	Engine::width = is_number(config->Get("window-width")) ? std::stoi(config->Get("window-width").c_str()) : 640;
+	Engine::height = is_number(config->Get("window-height")) ? std::stoi(config->Get("window-height").c_str()) : 480;
 
 	/* sdl2 lib initialization */
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -26,15 +27,15 @@ int Engine::Init(string title) {
 	}
 
 	data = new Data();
-	if (data->Load(config["data-file"]) != 0) {
+	if (data->Load(config->Get("data-file")) != 0) {
 		SDL_Log("Unable to load data");
 		successfull_load = false;
 	}
 
 	/* window creating */
-	Uint32 window_resizable_flag = config["resizable"] == "true" ? SDL_WINDOW_RESIZABLE : 0;
-	Uint32 window_fullscreen_flag = config["display-mode"] == "fullscreen" ? SDL_WINDOW_FULLSCREEN : 0;
-	Uint32 window_borderless_flag = config["display-mode"] == "borderless" ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+	Uint32 window_resizable_flag = config->Get("resizable") == "true" ? SDL_WINDOW_RESIZABLE : 0;
+	Uint32 window_fullscreen_flag = config->Get("display-mode") == "fullscreen" ? SDL_WINDOW_FULLSCREEN : 0;
+	Uint32 window_borderless_flag = config->Get("display-mode") == "borderless" ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
 
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | window_resizable_flag | window_fullscreen_flag | window_borderless_flag);
 	if (window == NULL) {
@@ -45,8 +46,8 @@ int Engine::Init(string title) {
 	/* renderer creation */
 	Uint32 renderer_flags;
 
-	if (config["renderer-acceleration"] == "software") renderer_flags = SDL_RENDERER_SOFTWARE;
-	else if (config["vsync"] == "on") renderer_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+	if (config->Get("renderer-acceleration") == "software") renderer_flags = SDL_RENDERER_SOFTWARE;
+	else if (config->Get("vsync") == "on") renderer_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	else renderer_flags = SDL_RENDERER_ACCELERATED;
 
 	renderer = SDL_CreateRenderer(window, -1, renderer_flags);
@@ -56,8 +57,8 @@ int Engine::Init(string title) {
 	}
 
 	/* character maps generation */
-	text = new Text(data);
-	cout << "alignement: " << text->GetAlignment() << endl;
+	text = new TextRenderer(config, data);
+	std::cout << "alignement: " << text->GetAlignment() << std::endl;
 	if (text->GenerateCharacterMap(renderer)) {
 		SDL_Log("Unable to generate characters map.");
 		successfull_load = false;
@@ -73,8 +74,8 @@ int Engine::Loop(int _fps, int _ups) {
 	Engine::fps = _fps;
 	Engine::ups = _ups;
 
-	using clock = high_resolution_clock;
-	nanoseconds lag(0);
+	using clock = std::chrono::high_resolution_clock;
+	std::chrono::nanoseconds lag(0);
 	auto time_start = clock::now();
 	auto timer = clock::now();
 
@@ -84,16 +85,16 @@ int Engine::Loop(int _fps, int _ups) {
 	Timer engine_text_rendering_timer;
 	Timer sdl_text_rendering_timer;
 
-	string fps_text = "";
+	std::string fps_text = "";
 
 	while (running) {
 		// calcualte awaited timesteps
-		nanoseconds frame_timestep(1000000000 / fps);
-		nanoseconds tick_timestep(1000000000 / ups);
+		std::chrono::nanoseconds frame_timestep(1000000000 / fps);
+		std::chrono::nanoseconds tick_timestep(1000000000 / ups);
 
 		auto delta_time = clock::now() - time_start;
 		time_start = clock::now();
-		lag += duration_cast<nanoseconds>(delta_time);
+		lag += std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time);
 
 		while (lag >= tick_timestep) {
 			lag -= tick_timestep;
@@ -108,11 +109,11 @@ int Engine::Loop(int _fps, int _ups) {
 
 		frames++;
 
-		auto frame_render_time = duration_cast<nanoseconds>(clock::now() - time_start);
+		auto frame_render_time = std::chrono::duration_cast<std::chrono::nanoseconds>(clock::now() - time_start);
 
-		if (duration_cast<seconds>(clock::now() - timer).count() >= 1) {
+		if (std::chrono::duration_cast<std::chrono::seconds>(clock::now() - timer).count() >= 1) {
 			SDL_Log("frames: %d, ticks: %d | per second\n", frames, ticks);
-			fps_text = "{{color_name=green}}" + to_string(frames) + "{{color_name=white}}{{font=debug_font2}}fps | {{color_name=green}}{{font=default}}" + to_string(duration_cast<milliseconds>(frame_render_time).count()) + "{{color=255,255,255,255}}ms {{font=debug_font3}}frame{{font=default}} render{{newline}} time";
+			fps_text = "{{color_name=green}}" + std::to_string(frames) + "{{color_name=white}}{{font=debug_font2}}fps | {{color_name=green}}{{font=default}}" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(frame_render_time).count()) + "{{color=255,255,255,255}}ms {{font=debug_font3}}frame{{font=default}} render{{newline}} time";
 
 			timer = clock::now();
 			ticks = 0;
@@ -122,10 +123,13 @@ int Engine::Loop(int _fps, int _ups) {
 		SDL_Color fps_color = {236,208,120,255};
 		text->Render(renderer, "debug_font", 7, 7, fps_text, fps_color);
 
+		std::string long_text = "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, ‘and what is the use of a book,’ thought Alice ‘without pictures or conversations?’";
+		text->Render(renderer, "debug_font", 7, 50, long_text, fps_color);
+
 		SDL_RenderPresent(renderer);
 
 		if (frame_timestep > frame_render_time) {
-			SDL_Delay(duration_cast<milliseconds>(frame_timestep - frame_render_time).count());
+			SDL_Delay(std::chrono::duration_cast<std::chrono::milliseconds>(frame_timestep - frame_render_time).count());
 		}
 	}
 	return 0;
@@ -133,6 +137,15 @@ int Engine::Loop(int _fps, int _ups) {
 
 void Engine::update() {
 	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_WINDOWEVENT) {
+			switch (event.window.event) {
+				case SDL_WINDOWEVENT_RESIZED:
+					SDL_Log("window resized: %dx%d\n", event.window.data1, event.window.data2);
+					config->Set("window-width", std::to_string(event.window.data1));
+					config->Set("window-height", std::to_string(event.window.data2));
+					break;
+			}
+		}
 		if (event.type == SDL_QUIT) running = false;
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
@@ -155,6 +168,10 @@ Engine* Engine::getInstance() {
 Engine::Engine() {}
 
 Engine::~Engine() {
+	delete config;
+	delete data;
+	delete text;
+
 	// core sdl stuff
 	TTF_Quit();
 	SDL_DestroyRenderer(renderer);

@@ -13,22 +13,20 @@
 #include <string>
 #include <iostream>
 #include <chrono>
+
 #include "config.h"
 #include "data.h"
-#include "text.h"
+#include "text_renderer.h"
 #include "util.h"
-
-using namespace std;
-using namespace chrono;
 
 class Engine {
 private:
 	static Engine* instance;
 	Engine();
 
-	Config config;
+	Config* config;
 	Data* data;
-	Text* text;
+	TextRenderer* text;
 
 	int width;
 	int height;
@@ -48,16 +46,13 @@ private:
 public:
 	virtual ~Engine();
 	static Engine* getInstance();
-	int Init(string);
+	int Init(std::string);
 	int Loop(int,int);
-	Config GetConfig() { return config; }
 	SDL_Window* GetWindow() { return window; }
 	SDL_Renderer* GetRenderer() { return renderer; }
-	Text GetText() { return *text; }
 	bool IsRunning() { return running; }
 	int GetFps() { return fps; }
 	int GetUps() { return ups; }
 };
-
 
 #endif /* ENGINE_H_ */

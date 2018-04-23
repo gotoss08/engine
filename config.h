@@ -13,14 +13,13 @@
 #include <map>
 #include "pugixml.hpp"
 
-using namespace std;
-using namespace pugi;
-
 class Config {
-	map<string, string> options_map;
+private:
+	std::map<std::string, std::string> options_map;
 public:
 	int Load();
-	string operator[](string);
+	std::string Get(std::string);
+	void Set(std::string, std::string);
 };
 
 #endif /* CONFIG_H_ */

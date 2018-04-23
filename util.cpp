@@ -16,6 +16,6 @@ void Timer::start() {
 }
 
 int Timer::stop() {
-	return duration_cast<nanoseconds>((clock.now() - start_tp)).count();
+	return std::chrono::duration_cast<std::chrono::nanoseconds>((clock.now() - start_tp)).count();
 }
 

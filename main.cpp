@@ -9,7 +9,7 @@
 #include "engine.h"
 
 void print_log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
-	cout << "log: " << message << endl;
+	std::cout << "log: " << message << std::endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -24,6 +24,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	engine->Loop(60,60);
+
+	delete engine;
 
     system("PAUSE");
 	return 0;

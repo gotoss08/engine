@@ -5,20 +5,30 @@
  *      Author: gotoss08
  */
 
-#include "text.h"
+#include "text_renderer.h"
 
-int GameEngine::Text::GenerateCharacterMap(SDL_Renderer* renderer) {
+int TextRenderer::GenerateCharacterMap(SDL_Renderer* renderer) {
 	SDL_Color white = {255,255,255,255};
 
 	for (const auto& kv : data->GetFonts()) {
 		std::cout << "font: " << kv.first << std::endl;
-		std::map<char, SDL_Texture*> current_font_char_map;
+
+		std::map<char, SDL_Texture*> temp_font_char_map;
+		std::map<char, CharacterMetrics> temp_char_metrics_map;
+
 		for (char& ch : CHARACTERS) {
 			SDL_Surface* char_surface = TTF_RenderGlyph_Blended(kv.second, ch, white);
-			current_font_char_map.insert(std::make_pair(ch, SDL_CreateTextureFromSurface(renderer, char_surface)));
+			temp_font_char_map.insert(std::make_pair(ch, SDL_CreateTextureFromSurface(renderer, char_surface)));
 			SDL_FreeSurface(char_surface);
+
+			int minx, maxx, miny, maxy, advance;
+			TTF_GlyphMetrics(kv.second, ch, &minx, &maxx, &miny, &maxy, &advance);
+			temp_char_metrics_map.insert(std::make_pair(ch, CharacterMetrics{minx, maxx, miny, maxy, advance}));
 		}
-		chars_map.insert(make_pair(kv.first, current_font_char_map));
+
+		chars_map.insert(std::make_pair(kv.first, temp_font_char_map));
+		char_metrics_map.insert(std::make_pair(kv.first, temp_char_metrics_map));
+
 		SDL_Log("Generated %s textures for characters in font: %s\n", std::to_string(CHARACTERS.length()).c_str(), kv.first.c_str());
 	}
 
@@ -26,13 +36,17 @@ int GameEngine::Text::GenerateCharacterMap(SDL_Renderer* renderer) {
 	else return -1;
 }
 
-void GameEngine::Text::Render(SDL_Renderer* renderer, std::string font_name, int x, int y, std::string text, SDL_Color color) {
+void TextRenderer::Render(SDL_Renderer* renderer, std::string font_name, int x, int y, std::string text, SDL_Color color) {
 	std::map<int, SDL_Color> text_color_map;
 
 	SDL_Color cur_color = color;
 	std::string cur_font_name = font_name;
 	TTF_Font* cur_font;
 	int minx, maxx, miny, maxy, advance, line_height;
+	int cur_width = 0, cur_height = 0;
+	int max_width = std::stoi(config->Get("window-width")), max_height = std::stoi(config->Get("window-height"));
+
+	SDL_Log("max_width: %d, min_width: %d\n", max_width, max_height);
 
 	int cursor_x = x, cursor_y = 0;
 	size_t tag_cursor_pos = 0;
@@ -56,6 +70,15 @@ void GameEngine::Text::Render(SDL_Renderer* renderer, std::string font_name, int
 		for (const char& ch : to_render_text) {
 			TTF_GlyphMetrics(cur_font, ch, &minx, &maxx, &miny, &maxy, &advance);
 			int char_width = maxx > advance ? maxx : advance;
+
+			cur_width += advance;
+			cur_height = line_height * cursor_y;
+
+			if (cur_width >= max_width - x) {
+				cursor_x = x;
+				cursor_y++;
+				cur_width = advance;
+			}
 
 			SDL_Texture* char_texture = chars_map[cur_font_name][ch];
 			SDL_Rect char_rect{cursor_x, y + line_height * cursor_y, char_width, line_height};
@@ -132,13 +155,14 @@ void GameEngine::Text::Render(SDL_Renderer* renderer, std::string font_name, int
 	}
 }
 
-GameEngine::Text::Text(Data* _data) {
-	data = _data;
+TextRenderer::TextRenderer(Config* _config, Data* _data) {
+	config = _config;
+    data = _data;
 	padding_left = 0, padding_right = 0, padding_up = 0, padding_down = 0;
 	align = Alignment::right;
 }
 
-GameEngine::Text::~Text() {
+TextRenderer::~TextRenderer() {
 	for (const auto& kv1 : chars_map)
 		for (const auto& kv2 : kv1.second) SDL_DestroyTexture(kv2.second);
 }

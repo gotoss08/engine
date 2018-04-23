@@ -16,29 +16,29 @@
 #include <vector>
 
 #include "data.h"
+#include "config.h"
 #include "util.h"
 
-using namespace std;
+namespace GameEngine {
+    enum Alignment {left = 0, center = 1, right = 2};
+    class Text {
+        Data* data;
+        bool successfull_load = true;
 
-enum Alignment {left = 0, center = 1, right = 2};
+        std::string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ";
+        std::map<std::string, std::map<char, SDL_Texture*>> chars_map;
 
-class Text {
-    Data* data;
-    bool successfull_load = true;
+        int padding_left, padding_right, padding_up, padding_down;
+        Alignment align;
+    public:
+        Text(Data* _data);
+        virtual ~Text();
 
-    string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ";
-    map<string, map<char, SDL_Texture*>> chars_map;
+        int GenerateCharacterMap(SDL_Renderer*);
+        void Render(SDL_Renderer*, std::string, int, int, std::string, SDL_Color);
 
-    int padding_left, padding_right, padding_up, padding_down;
-    Alignment align;
-public:
-	int GenerateCharacterMap(SDL_Renderer*);
-	void Render(SDL_Renderer*,string,int,int,string,SDL_Color);
-
-    int GetAlignment() { return align; }
-
-	Text(Data* _data);
-	virtual ~Text();
+        int GetAlignment() { return align; }
+    };
 };
 
 #endif /* TEXT_H_ */
