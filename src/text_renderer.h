@@ -15,6 +15,8 @@
 #include <map>
 #include <vector>
 
+#include "libs/loguru.hpp"
+
 #include "data.h"
 #include "config.h"
 #include "util.h"
@@ -27,6 +29,7 @@ struct CharacterMetrics {
     int miny;
     int maxy;
     int advance;
+    int render_width;
 };
 
 class TextRenderer {
@@ -34,7 +37,7 @@ class TextRenderer {
     Data* data;
     bool successfull_load = true;
 
-    std::string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ";
+    std::string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ ";
     std::map<std::string, std::map<char, SDL_Texture*>> chars_map;
     std::map<std::string, std::map<char, CharacterMetrics>> char_metrics_map;
 

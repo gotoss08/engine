@@ -6,6 +6,8 @@
  */
 
 #include <SDL2/SDL.h>
+#define LOGURU_IMPLEMENTATION 1
+#include "libs/loguru.hpp"
 #include "engine.h"
 
 void print_log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
@@ -13,6 +15,7 @@ void print_log(void* userdata, int category, SDL_LogPriority priority, const cha
 }
 
 int main(int argc, char* argv[]) {
+	loguru::init(argc, argv);
 	SDL_LogSetOutputFunction(print_log, NULL);
 //	SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
 
@@ -23,7 +26,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	engine->Loop(60,60);
+	engine->Loop(5,60);
 
 	delete engine;
 

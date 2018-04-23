@@ -21,4 +21,4 @@ main.o: main.cpp
 	$(TRANSLATE_TO_OBJ) main.cpp
 
 clean:
-	rm $(OBJS)
+	rm -f $(OBJS)

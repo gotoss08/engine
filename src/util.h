@@ -22,10 +22,4 @@ public:
 	int stop();
 };
 
-class EngineLogger {
-public:
-	void Log(std::string);
-	void Error();
-};
-
 #endif /* UTIL_H_ */

@@ -1,14 +1,14 @@
-OBJS=format.o pugixml.o
+OBJS=pugixml.o format.o
 
 COMPILE=$(CC) $(COMPILER_FLAGS) -c
 
 all: $(OBJS)
 
-format.o: format.cc
-	$(TRANSLATE_TO_OBJ) format.cc
-
 pugixml.o: pugixml.cpp
 	$(TRANSLATE_TO_OBJ) pugixml.cpp
 
+format.o: format.cc format.h
+	$(TRANSLATE_TO_OBJ) format.cc
+
 clean:
-	rm $(OBJS)
+	rm -f $(OBJS)
