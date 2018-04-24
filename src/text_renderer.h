@@ -33,27 +33,38 @@ struct CharacterMetrics {
 };
 
 class TextRenderer {
-    Config* config;
-    Data* data;
     bool successfull_load = true;
 
-    std::string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ ";
+    Config* config;
+    Data* data;
+
+    SDL_Renderer* renderer;
+
+    std::string CHARACTERS = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`‘’abcdefghijklmnopqrstuvwxyz{|}~ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ ";
     std::map<std::string, std::map<char, SDL_Texture*>> chars_map;
     std::map<std::string, std::map<char, CharacterMetrics>> char_metrics_map;
 
     TextAlignment text_alignment;
+    int text_target_width;
     int padding_left, padding_right, padding_top, padding_bottom;
-    int max_text_rendering_width, max_text_rendering_height;
+    bool wordwrap, charwrap;
 public:
     TextRenderer(Config* _config, Data* _data);
     virtual ~TextRenderer();
 
     int GenerateCharacterMap(SDL_Renderer*);
-    void Render(SDL_Renderer*, std::string, int, int, std::string, SDL_Color);
+    void Render(std::string, int, int, std::string, SDL_Color);
+
+    SDL_Renderer* GetRenderer() { return renderer; }
+    void SetRenderer(SDL_Renderer* _renderer) { renderer = _renderer; }
 
     int GetTextAlignment() { return text_alignment; }
-
     void SetAlignment(TextAlignment _text_alignment) { text_alignment = _text_alignment; }
+
+    int GetTextTargetWidth() { return text_target_width; }
+    void SetTextTargetWidth(int _text_target_width) { text_target_width = _text_target_width; }
+    
+    // TODO: write getters&setters for each padding
     void SetPadding(int _pl, int _pr, int _pt, int _pb)
     {
         padding_left = _pl;
@@ -61,11 +72,12 @@ public:
         padding_top = _pt;
         padding_bottom = _pb;
     }
-    void SetTextRenderingBoundaries(int _max_width, int _max_height)
-    {
-        max_text_rendering_width = _max_width;
-        max_text_rendering_height = _max_height;    
-    }
+
+    bool IsWordwrap() { return wordwrap; }
+    void SetWordwrap(bool _wordwrap) { wordwrap = _wordwrap; }
+
+    bool IsCharwrap() { return charwrap; }
+    void SetCharwrap(bool _charwrap) { charwrap = _charwrap; }
 };
 
 #endif /* TEXT_RENDERER_H_ */

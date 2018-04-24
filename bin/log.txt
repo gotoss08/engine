@@ -2,40 +2,5 @@ arguments: engine64.exe
 Current dir: c:\code\engine\bin
 File verbosity level: 9
 date       time         ( uptime  ) [ thread name/id ]                   file:line     v| 
-2018-04-25 04:02:10.547 (   0.032s) [main thread     ]             loguru.hpp:2035     0| Logging to '%s', mode: '%s', verbosity: %d
-2018-04-25 04:02:10.867 (   0.351s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:10.872 (   0.356s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:10.877 (   0.361s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:10.882 (   0.366s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:10.887 (   0.371s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:11.104 (   0.588s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.113 (   0.597s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:11.123 (   0.607s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.134 (   0.618s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.144 (   0.628s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:11.353 (   0.837s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.362 (   0.846s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:11.372 (   0.856s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.381 (   0.865s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.388 (   0.872s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:11.597 (   1.081s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.605 (   1.089s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:11.614 (   1.098s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.623 (   1.107s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.630 (   1.114s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:11.847 (   1.331s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.855 (   1.340s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:11.866 (   1.350s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.876 (   1.360s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:11.884 (   1.368s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:12.100 (   1.584s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:12.108 (   1.593s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:12.119 (   1.603s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:12.129 (   1.613s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:12.137 (   1.621s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:12.349 (   1.833s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:12.358 (   1.842s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(32) to 44
-2018-04-25 04:02:12.365 (   1.850s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:12.374 (   1.858s) [main thread     ]      text_renderer.cpp:70     ERR| Tag inside tag not allowed. Switching current open tag position(23) to 32
-2018-04-25 04:02:12.382 (   1.866s) [main thread     ]      text_renderer.cpp:96       0| tags at index 23: tag[tag inside inside tag]; tag[tag inside tag]; tag[another tag]; tag[newline]; 
-2018-04-25 04:02:12.640 (   2.124s) [main thread     ]             loguru.hpp:1753     0| atexit
+2018-04-25 05:21:34.314 (   0.033s) [main thread     ]             loguru.hpp:2035     0| Logging to '%s', mode: '%s', verbosity: %d
+2018-04-25 05:21:41.831 (   7.551s) [main thread     ]             loguru.hpp:1753     0| atexit
