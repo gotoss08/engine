@@ -1,6 +1,6 @@
 export CC=g++
-export COMPILER_FLAGS=-O0 -g3 -Wall -static-libgcc -m64 -std=c++11 -lpthread -ldl -Wcpp
-export LIKER_FLAGS=-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -mwindows 
+export COMPILER_FLAGS=-O0 -g3 -Wall -static-libgcc -m64 -std=c++11 -lpthread -ldl -Wcpp -mwindows 
+export LIKER_FLAGS=-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf
 
 OBJ_NAME = bin/engine64.exe
 
