@@ -46,15 +46,13 @@ void TextRenderer::Render(SDL_Renderer *renderer, std::string font_name, int x, 
 {
 	std::map<int, std::vector<std::string>> tags_map;
 
-	// some ${text and another text
-
 	std::string open_tag = "${";
 	std::string close_tag = "}";
 
-	size_t tag_cursor_pos = 0,
-		   open_tag_pos,
-		   close_tag_pos,
-		   next_open_tag_pos;
+	size_t tag_cursor_pos = 0;
+	size_t open_tag_pos;
+	size_t close_tag_pos;
+	size_t next_open_tag_pos;
 
 	while ((open_tag_pos = text.find_first_of(open_tag, tag_cursor_pos)) != std::string::npos)
 	{
@@ -77,7 +75,6 @@ void TextRenderer::Render(SDL_Renderer *renderer, std::string font_name, int x, 
 		}
 
 		std::string tag_str = text.substr(open_tag_pos + open_tag.size(), close_tag_pos - open_tag_pos - open_tag.size());
-		LOG_F(INFO, "tag: {}", tag_str);
 
 		if (tags_map.find(tag_cursor_pos) != tags_map.end())
 			tags_map[tag_cursor_pos].push_back(tag_str);
@@ -88,125 +85,130 @@ void TextRenderer::Render(SDL_Renderer *renderer, std::string font_name, int x, 
 			tags_map[tag_cursor_pos] = temp_vector;
 		}
 
-		LOG_F(INFO, "tags map now contains {} text tag insert positions", tags_map.size());
-
 		text.erase(open_tag_pos, (close_tag_pos + close_tag.size()) - open_tag_pos);
-		LOG_F(INFO, "text after manipulations: {}", text);
 	}
 
-	int max_width = stoi(config->Get("window-width")),
-		max_height = stoi(config->Get("window-height")),
-		cur_width = x,
-		cur_height = 0,
-		char_index = 0;
+	int window_width = stoi(config->Get("window-width"));
+	int max_text_width = max_text_rendering_width != -1 ? max_text_rendering_width - padding_right : window_width - x - padding_right;
+	int current_text_width = 0;
+	int current_character_index = 0;
 
-	for (const char &ch : text)
+	bool wordwrap = false;
+	if (wordwrap)
 	{
-		bool newline = false;
-		if (tags_map.find(char_index) != tags_map.end()) // there is a tag attached to current character index
+		for (const char &ch : text)
 		{
-			std::vector<std::string> tags_vector = tags_map[char_index];
-			for (const std::string &tag_str : tags_vector)
+			// check if text already contains new line tags
+			if (tags_map.find(current_character_index) != tags_map.end())
 			{
-				if (tag_str == "newline")
-					newline = true;
-			}
-		}
-
-		if (newline)
-		{
-			cur_width = x;
-		}
-
-		CharacterMetrics char_metrics = char_metrics_map[font_name][ch];
-		cur_width += char_metrics.advance;
-
-		if (cur_width >= max_width - x)
-		{
-			int new_line_insert_pos = char_index;
-			int prev_word_length = 0;
-
-			for (int i = char_index; i >= 0; i--)
-			{
-				char_metrics = char_metrics_map[font_name][text[i]];
-				prev_word_length += char_metrics.advance;
-				if (text[i] == ' ')
+				std::vector<std::string> tags_vector = tags_map[current_character_index];
+				for (const std::string &tag_str : tags_vector)
 				{
-					new_line_insert_pos = i;
-					break;
+					if (tag_str == "newline")
+						current_text_width = 0;
 				}
 			}
 
-			cur_width = x + prev_word_length;
+			CharacterMetrics char_metrics = char_metrics_map[font_name][ch];
+			current_text_width += char_metrics.advance;
 
-			LOG_F(INFO, "text before reaching maximum width: '{}'", text.substr(0, new_line_insert_pos));
-
-			if (tags_map.find(new_line_insert_pos) != tags_map.end())
-				tags_map[new_line_insert_pos].push_back("newline");
-			else
+			if (current_text_width >= max_text_width)
 			{
-				std::vector<std::string> temp_vector;
-				temp_vector.push_back("newline");
-				tags_map[new_line_insert_pos] = temp_vector;
-			}
-			// text.insert(prev_space_pos, "${newline}");
-		}
+				int new_line_insert_pos = current_character_index;
+				int prev_word_length = 0;
 
-		char_index++;
+				for (int i = current_character_index; i >= 0; i--)
+				{
+					char_metrics = char_metrics_map[font_name][text[i]];
+					prev_word_length += char_metrics.advance;
+					if (text[i] == ' ')
+					{
+						new_line_insert_pos = i;
+						break;
+					}
+				}
+
+				current_text_width = prev_word_length;
+
+				if (tags_map.find(new_line_insert_pos) != tags_map.end())
+					tags_map[new_line_insert_pos].push_back("newline");
+				else
+				{
+					std::vector<std::string> temp_vector;
+					temp_vector.push_back("newline");
+					tags_map[new_line_insert_pos] = temp_vector;
+				}
+			}
+
+			current_character_index++;
+		}
 	}
 
-	int cursor_x = x,
-		cursor_y = 0,
-		line_height = TTF_FontHeight(data->Font(font_name));
+	int rendering_cursor_x = x;
+	int current_line_index = 0;
+	int current_line_height;
 
-	cur_width = 0;
-	cur_height = 0;
-	char_index = 0;
+	current_text_width = 0;
+	current_character_index = 0;
+
+	bool charwrap = true;
 
 	for (const char &ch : text)
 	{
-		bool newline = false;
-		if (tags_map.find(char_index) != tags_map.end()) // there is a tag attached to current character index
+		bool render_current_char = true;
+
+		if (tags_map.find(current_character_index) != tags_map.end()) // there is a tag attached to current character index
 		{
-			std::vector<std::string> tags_vector = tags_map[char_index];
+			std::vector<std::string> tags_vector = tags_map[current_character_index];
 			for (const std::string &tag_str : tags_vector)
 			{
 				if (tag_str.find_first_of("=") == std::string::npos) // statement tag | ${newline}
 				{
-					LOG_F(INFO, "found statement tag: '{}'", tag_str);
 					if (tag_str == "newline")
-						newline = true;
+					{
+						current_text_width = 0;
+						rendering_cursor_x = x;
+						current_line_index++;
+						if (ch == ' ')
+							render_current_char = false;
+					}
 				}
 				else // control tag | ${color_name=white}
 				{
-					LOG_F(INFO, "found control tag: '{}'", tag_str);
 				}
 			}
 		}
 
-		char_index++;
+		current_character_index++;
 
+		current_line_height = TTF_FontHeight(data->Font(font_name));
+		
 		CharacterMetrics char_metrics = char_metrics_map[font_name][ch];
 
-		cur_width += char_metrics.render_width;
-		cur_height = line_height * cursor_y;
+		current_text_width += char_metrics.render_width;
 
-		if (newline)
+		LOG_F(INFO, "current text width: {}(max: {}); rendering cursor: {}(x: {})", current_text_width, max_text_width, rendering_cursor_x, x);
+
+		if (charwrap && current_text_width >= max_text_width)
 		{
-			cursor_x = x;
-			cursor_y++;
-			if (ch != ' ')
-				cur_width = char_metrics.advance; // if first character on new line is not 'space' then do nothing
-			else
-			{
-				cur_width = 0;
-				continue;
-			}
+			// SDL_SetRenderDrawColor(renderer, 125, 255, 125, 145);
+			// SDL_Rect debug_rect{x, y + current_line_height * current_line_index, current_text_width, current_line_height};
+			// SDL_RenderFillRect(renderer, &debug_rect);
+			// SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+			current_text_width = 0;
+			rendering_cursor_x = x;
+			current_line_index++;
+			if (ch == ' ')
+				render_current_char = false;
 		}
 
+		if (!render_current_char)
+			continue;
+
 		SDL_Texture *char_texture = chars_map[font_name][ch];
-		SDL_Rect char_rect{cursor_x, y + line_height * cursor_y, char_metrics.render_width, line_height};
-		cursor_x += char_metrics.advance;
+		SDL_Rect char_rect{rendering_cursor_x, y + current_line_height * current_line_index, char_metrics.render_width, current_line_height};
+		rendering_cursor_x += char_metrics.advance;
 
 		SDL_SetTextureColorMod(char_texture, color.r, color.g, color.b);
 		SDL_SetTextureAlphaMod(char_texture, color.a);
@@ -334,8 +336,9 @@ TextRenderer::TextRenderer(Config *_config, Data *_data)
 {
 	config = _config;
 	data = _data;
-	padding_left = 0, padding_right = 0, padding_up = 0, padding_down = 0;
-	align = Alignment::right;
+	text_alignment = TextAlignment::left;
+	padding_left = 0, padding_right = 0, padding_top = 0, padding_bottom = 0;
+	max_text_rendering_width = -1, max_text_rendering_height = -1;
 }
 
 TextRenderer::~TextRenderer()

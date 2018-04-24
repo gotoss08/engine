@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fonts>
-	<font name="debug_font" path="data/TruenoRg.otf" size="16"/>
+	<font name="debug_font" path="data/DejaVuSerif.ttf" size="16"/>
     <font name="debug_font2" path="data/PressStart2P.ttf" size="16"/>
     <font name="debug_font3" path="data/TruenoBd.otf" size="16"/>
 </fonts>

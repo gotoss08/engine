@@ -58,7 +58,7 @@ int Engine::Init(std::string title) {
 
 	/* character maps generation */
 	text = new TextRenderer(config, data);
-	std::cout << "alignement: " << text->GetAlignment() << std::endl;
+	std::cout << "alignement: " << text->GetTextAlignment() << std::endl;
 	if (text->GenerateCharacterMap(renderer)) {
 		SDL_Log("Unable to generate characters map.");
 		successfull_load = false;
@@ -113,7 +113,7 @@ int Engine::Loop(int _fps, int _ups) {
 
 		if (std::chrono::duration_cast<std::chrono::seconds>(clock::now() - timer).count() >= 1) {
 			SDL_Log("frames: %d, ticks: %d | per second\n", frames, ticks);
-			fps_text = "{{color_name=green}}" + std::to_string(frames) + "{{color_name=white}}{{font=debug_font2}}fps | {{color_name=green}}{{font=default}}" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(frame_render_time).count()) + "{{color=255,255,255,255}}ms {{font=debug_font3}}frame{{font=default}} render{{newline}} time";
+			fps_text = "${color_name=green}" + std::to_string(frames) + "${color_name=white}${font=debug_font2}fps | ${color_name=green}${font=default}" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(frame_render_time).count()) + "${color=255,255,255,255}ms ${font=debug_font3}frame${font=default} render${newline} time";
 
 			timer = clock::now();
 			ticks = 0;
@@ -121,12 +121,12 @@ int Engine::Loop(int _fps, int _ups) {
 		}
 
 		SDL_Color fps_color = {236,208,120,255};
-		// text->Render(renderer, "debug_font", 7, 7, fps_text, fps_color);
+		text->Render(renderer, "debug_font", 7, 7, fps_text, fps_color);
 
-		// text->Render(renderer, "debug_font", 7, 7, "test string that ${${tag1=tag1content}s}contains tags", fps_color);
+		text->Render(renderer, "debug_font", 7, 50, "test string that ${${tag1=tag1content}s}contains tags", fps_color);
 
-		std::string long_text = "Alice was beginning to get very tirednewline${newline} of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister wasverylongstring reading, but it had no pictures or conversations in it, ‘and what is the use of a book,’ thought Alice ‘without pictures or conversations?’";
-		text->Render(renderer, "debug_font", 7, 50, long_text, fps_color);
+		std::string long_text = "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, ‘and what is the use of a book,’ thought Alice ‘without pictures or conversations?’${newline}${newline}So she was considering in her own mind (as well as she could, for the hot day made her feel very sleepy and stupid), whether the pleasure of making a daisy-chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her.${newline}${newline}There was nothing so very remarkable in that; nor did Alice think it so very much out of the way to hear the Rabbit say to itself, ‘Oh dear! Oh dear! I shall be late!’ (when she thought it over afterwards, it occurred to her that she ought to have wondered at this, but at the time it all seemed quite natural); but when the Rabbit actually took a watch out of its waistcoat-pocket, and looked at it, and then hurried on, Alice started to her feet, for it flashed across her mind that she had never before seen a rabbit with either a waistcoat-pocket, or a watch to take out of it, and burning with curiosity, she ran across the field after it, and fortunately was just in time to see it pop down a large rabbit-hole under the hedge.";
+		text->Render(renderer, "debug_font", 7, 100, long_text, fps_color);
 
 		SDL_RenderPresent(renderer);
 

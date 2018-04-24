@@ -21,7 +21,7 @@
 #include "config.h"
 #include "util.h"
 
-enum Alignment {left = 0, center = 1, right = 2};
+enum TextAlignment {left = 0, center = 1, right = 2};
 
 struct CharacterMetrics {
     int minx;
@@ -41,8 +41,9 @@ class TextRenderer {
     std::map<std::string, std::map<char, SDL_Texture*>> chars_map;
     std::map<std::string, std::map<char, CharacterMetrics>> char_metrics_map;
 
-    int padding_left, padding_right, padding_up, padding_down;
-    Alignment align;
+    TextAlignment text_alignment;
+    int padding_left, padding_right, padding_top, padding_bottom;
+    int max_text_rendering_width, max_text_rendering_height;
 public:
     TextRenderer(Config* _config, Data* _data);
     virtual ~TextRenderer();
@@ -50,7 +51,21 @@ public:
     int GenerateCharacterMap(SDL_Renderer*);
     void Render(SDL_Renderer*, std::string, int, int, std::string, SDL_Color);
 
-    int GetAlignment() { return align; }
+    int GetTextAlignment() { return text_alignment; }
+
+    void SetAlignment(TextAlignment _text_alignment) { text_alignment = _text_alignment; }
+    void SetPadding(int _pl, int _pr, int _pt, int _pb)
+    {
+        padding_left = _pl;
+        padding_right = _pr;
+        padding_top = _pt;
+        padding_bottom = _pb;
+    }
+    void SetTextRenderingBoundaries(int _max_width, int _max_height)
+    {
+        max_text_rendering_width = _max_width;
+        max_text_rendering_height = _max_height;    
+    }
 };
 
 #endif /* TEXT_RENDERER_H_ */

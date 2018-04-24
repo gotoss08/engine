@@ -16,6 +16,7 @@ void print_log(void* userdata, int category, SDL_LogPriority priority, const cha
 
 int main(int argc, char* argv[]) {
 	loguru::init(argc, argv);
+	loguru::add_file("log.txt", loguru::Truncate, loguru::Verbosity_MAX);
 	SDL_LogSetOutputFunction(print_log, NULL);
 //	SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
 
@@ -30,6 +31,5 @@ int main(int argc, char* argv[]) {
 
 	delete engine;
 
-    system("PAUSE");
 	return 0;
 }
