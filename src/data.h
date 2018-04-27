@@ -16,24 +16,26 @@
 #include <map>
 #include "libs/pugixml.hpp"
 
-class Data {
-private:
+class Data
+{
+  private:
 	bool successfull_load = true;
 
-    std::map<std::string, TTF_Font*> fonts_map;
+	std::map<std::string, TTF_Font *> fonts_map;
 	void load_font(std::string font_name, std::string font_path, int font_size);
 
-    std::map<std::string,SDL_Color> colors_map;
-public:
+	std::map<std::string, SDL_Color> colors_map;
+
+  public:
 	int Load(std::string data_doc_path);
 
-	TTF_Font* Font(std::string font_name) { return fonts_map[font_name]; }
-	std::map<std::string, TTF_Font*> GetFonts() { return fonts_map; }
+	TTF_Font *Font(std::string font_name) { return fonts_map[font_name]; }
+	std::map<std::string, TTF_Font *> GetFonts() { return fonts_map; }
 
-    SDL_Color Color(std::string color_name) { return colors_map[color_name]; }
-    std::map<std::string, SDL_Color> GetColors() { return colors_map; }
+	SDL_Color Color(std::string color_name) { return colors_map[color_name]; }
+	std::map<std::string, SDL_Color> GetColors() { return colors_map; }
 
-    Data();
+	Data();
 	~Data();
 };
 

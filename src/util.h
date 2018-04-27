@@ -12,12 +12,14 @@
 #include <string>
 #include <iostream>
 
-bool is_number(const std::string&);
+bool is_number(const std::string &);
 
-class Timer {
+class Timer
+{
 	std::chrono::high_resolution_clock clock;
 	std::chrono::high_resolution_clock::time_point start_tp;
-public:
+
+  public:
 	void start();
 	int stop();
 };
