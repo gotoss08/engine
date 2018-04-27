@@ -10,24 +10,27 @@
 #include "libs/loguru.hpp"
 #include "engine.h"
 
-void print_log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
+void print_log(void *userdata, int category, SDL_LogPriority priority, const char *message)
+{
 	std::cout << "log: " << message << std::endl;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
 	loguru::init(argc, argv);
 	loguru::add_file("log.txt", loguru::Truncate, loguru::Verbosity_MAX);
 	SDL_LogSetOutputFunction(print_log, NULL);
-//	SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+	//	SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
 
-	Engine* engine = Engine::getInstance();
+	Engine *engine = Engine::getInstance();
 
-	if (engine->Init("game") != 0) {
+	if (engine->Init("engine_x64") != 0)
+	{
 		SDL_Log("Unable to initialize engine.");
 		return -1;
 	}
 
-	engine->Loop(5,60);
+	engine->Loop(5, 60);
 
 	delete engine;
 

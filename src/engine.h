@@ -19,19 +19,20 @@
 #include "text_renderer.h"
 #include "util.h"
 
-class Engine {
-private:
-	static Engine* instance;
+class Engine
+{
+  private:
+	static Engine *instance;
 	Engine();
 
-	Config* config;
-	Data* data;
-	TextRenderer* text;
+	Config *config;
+	Data *data;
+	TextRenderer *text;
 
 	int width;
 	int height;
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	SDL_Window *window;
+	SDL_Renderer *renderer;
 
 	bool running = true;
 	SDL_Event event;
@@ -43,13 +44,14 @@ private:
 
 	void update();
 	void render();
-public:
+
+  public:
 	virtual ~Engine();
-	static Engine* getInstance();
+	static Engine *getInstance();
 	int Init(std::string);
-	int Loop(int,int);
-	SDL_Window* GetWindow() { return window; }
-	SDL_Renderer* GetRenderer() { return renderer; }
+	int Loop(int, int);
+	SDL_Window *GetWindow() { return window; }
+	SDL_Renderer *GetRenderer() { return renderer; }
 	bool IsRunning() { return running; }
 	int GetFps() { return fps; }
 	int GetUps() { return ups; }

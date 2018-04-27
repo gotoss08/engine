@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fonts>
 	<font name="debug_font" path="data/DejaVuSerif.ttf" size="16"/>
-    <font name="debug_font2" path="data/PressStart2P.ttf" size="16"/>
-    <font name="debug_font3" path="data/TruenoBd.otf" size="16"/>
+	<font name="debug_font2" path="data/PressStart2P.ttf" size="16"/>
+	<font name="debug_font3" path="data/TruenoBd.otf" size="16"/>
+	<font name="roguelike_font" path="data/DejaVuSans.ttf" size="16"/>
 </fonts>
 <colors>
-    <color name="white" r="255" g="255" b="255" a="255"/>
-    <color name="green" r="25" g="255" b="40" a="255"/>
+	<color name="clear_color" r="0" g="0" b="0" a="255"/>
+	<color name="white" r="255" g="255" b="255" a="255"/>
+	<color name="red" r="255" g="0" b="0" a="255"/>
+	<color name="green" r="0" g="255" b="0" a="255"/>
+	<color name="blue" r="0" g="0" b="255" a="255"/>
+	<color name="text" r="54" g="43" b="39" a="255"/>
+	<color name="alice" r="245" g="100" b="118" a="255"/>
+	<color name="the" r="3" g="94" b="123" a="255"/>
+	<color name="rabbit" r="125" g="175" b="156" a="255"/>
+
+	<color name="roguelike-text" r="255" g="255" b="255" a="255"/>
+	<color name="roguelike-attacker" r="235" g="104" b="65" a="255"/>
+	<color name="roguelike-attacked" r="0" g="160" b="176" a="255"/>
+	<color name="roguelike-damage" r="204" g="51" b="63" a="255"/>
 </colors>

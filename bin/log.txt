@@ -2,5 +2,5 @@ arguments: engine64.exe
 Current dir: c:\code\engine\bin
 File verbosity level: 9
 date       time         ( uptime  ) [ thread name/id ]                   file:line     v| 
-2018-04-25 05:21:34.314 (   0.033s) [main thread     ]             loguru.hpp:2035     0| Logging to '%s', mode: '%s', verbosity: %d
-2018-04-25 05:21:41.831 (   7.551s) [main thread     ]             loguru.hpp:1753     0| atexit
+2018-04-28 00:50:48.086 (   0.004s) [main thread     ]             loguru.hpp:2035     0| Logging to '%s', mode: '%s', verbosity: %d
+2018-04-28 00:50:51.354 (   3.271s) [main thread     ]             loguru.hpp:1753     0| atexit
