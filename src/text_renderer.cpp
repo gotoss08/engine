@@ -239,7 +239,7 @@ RenderedTextMetrics TextRenderer::Render(std::string font_name, int x, int y, st
             LOG_F(ERROR, "could not find pre-generated texture for character '{}' in font '{}'", ch, font_name);
 
         SDL_Rect char_rect;
-        char_rect.x = text_render_cursor_x + character_metrics.minx;
+        char_rect.x = text_render_cursor_x; // + character_metrics.minx
         char_rect.y = y + padding_top + line_index * character_metrics.line_height;
         char_rect.w = character_metrics.width;
         char_rect.h = character_metrics.height;

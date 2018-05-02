@@ -2,6 +2,7 @@
 <fonts>
 	<font name="debug_font" path="data/DejaVuSans.ttf" size="24"/>
 	<font name="glyph_font" path="data/PressStart2P.ttf" size="16"/>
+	<font name="main_menu_font" path="data/TruenoBd.otf" size="30"/>
 </fonts>
 <colors>
 	<color name="clear_color" r="47" g="65" b="114" a="255"/>

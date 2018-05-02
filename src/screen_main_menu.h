@@ -1,16 +1,18 @@
 #ifndef MAIN_MENU_SCREEN_H_
 #define MAIN_MENU_SCREEN_H_
 
-#include <vector>
 #include <string>
+#include <vector>
+
 
 #include "libs/loguru.hpp"
 
 #include "config.h"
 #include "data.h"
+#include "list_widget.h"
 #include "screen.h"
 #include "text_renderer.h"
-#include "list_widget.h"
+
 
 class MainMenuScreen : public Screen {
    private:
