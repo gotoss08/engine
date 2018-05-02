@@ -10,51 +10,52 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <string>
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <string>
+
+#include "libs/loguru.hpp"
 
 #include "config.h"
 #include "data.h"
 #include "text_renderer.h"
 #include "util.h"
 
-class Engine
-{
-  private:
-	static Engine *instance;
-	Engine();
+class Engine {
+   private:
+    static Engine *instance;
+    Engine();
 
-	Config *config;
-	Data *data;
-	TextRenderer *text;
+    Config *config;
+    Data *data;
+    TextRenderer *text;
 
-	int width;
-	int height;
-	SDL_Window *window;
-	SDL_Renderer *renderer;
+    int width;
+    int height;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
 
-	bool running = true;
-	SDL_Event event;
+    bool running = true;
+    SDL_Event event;
 
-	int fps;
-	int ups;
+    int fps;
+    int ups;
 
-	bool successfull_load = true;
+    bool successfull_load = true;
 
-	void update();
-	void render();
+    void update();
+    void render();
 
-  public:
-	virtual ~Engine();
-	static Engine *getInstance();
-	int Init(std::string);
-	int Loop(int, int);
-	SDL_Window *GetWindow() { return window; }
-	SDL_Renderer *GetRenderer() { return renderer; }
-	bool IsRunning() { return running; }
-	int GetFps() { return fps; }
-	int GetUps() { return ups; }
+   public:
+    virtual ~Engine();
+    static Engine *getInstance();
+    int Init(std::string);
+    int Loop(int, int);
+    SDL_Window *GetWindow() { return window; }
+    SDL_Renderer *GetRenderer() { return renderer; }
+    bool IsRunning() { return running; }
+    int GetFps() { return fps; }
+    int GetUps() { return ups; }
 };
 
 #endif /* ENGINE_H_ */

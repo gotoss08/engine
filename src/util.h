@@ -9,19 +9,18 @@
 #define UTIL_H_
 
 #include <chrono>
-#include <string>
 #include <iostream>
+#include <string>
 
 bool is_number(const std::string &);
 
-class Timer
-{
-	std::chrono::high_resolution_clock clock;
-	std::chrono::high_resolution_clock::time_point start_tp;
+class Timer {
+    std::chrono::high_resolution_clock clock;
+    std::chrono::high_resolution_clock::time_point start_tp;
 
-  public:
-	void start();
-	int stop();
+   public:
+    void start();
+    int stop();
 };
 
 #endif /* UTIL_H_ */

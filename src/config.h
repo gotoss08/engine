@@ -8,20 +8,19 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#include <string>
 #include <iostream>
 #include <map>
+#include <string>
 #include "libs/pugixml.hpp"
 
-class Config
-{
-  private:
-	std::map<std::string, std::string> options_map;
+class Config {
+   private:
+    std::map<std::string, std::string> options_map;
 
-  public:
-	int Load();
-	std::string Get(std::string);
-	void Set(std::string, std::string);
+   public:
+    int Load();
+    std::string Get(std::string);
+    void Set(std::string, std::string);
 };
 
 #endif /* CONFIG_H_ */
