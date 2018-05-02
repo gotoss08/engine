@@ -69,7 +69,7 @@ int Engine::Init(std::string title) {
     }
 
     // set start screen to main menu screen
-    SetScreen(new MainMenuScreen(renderer, config, data));
+    SetScreen(new MainMenuScreen(renderer, text, config, data));
 
     /* if no errors proceed */
     if (successfull_load)

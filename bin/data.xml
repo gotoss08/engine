@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fonts>
 	<font name="debug_font" path="data/DejaVuSans.ttf" size="24"/>
-	<font name="debug_font2" path="data/PressStart2P.ttf" size="16"/>
-	<font name="debug_font3" path="data/TruenoBd.otf" size="16"/>
-	<font name="roguelike_font" path="data/DejaVuSans.ttf" size="16"/>
+	<font name="glyph_font" path="data/PressStart2P.ttf" size="16"/>
 </fonts>
 <colors>
 	<color name="clear_color" r="47" g="65" b="114" a="255"/>
+
     <color name="fps_color_value" r="214" g="216" b="221" a="255"/>
     <color name="fps_color_text" r="143" g="147" b="157" a="255"/>
+
+    <color name="main_menu_text" r="214" g="216" b="221" a="255"/>
+    <color name="main_menu_text_selected" r="173" g="180" b="200" a="255"/>
+
 	<color name="white" r="255" g="255" b="255" a="255"/>
+	<color name="black" r="0" g="0" b="0" a="255"/>
 	<color name="red" r="255" g="0" b="0" a="255"/>
 	<color name="green" r="0" g="255" b="0" a="255"/>
 	<color name="blue" r="0" g="0" b="255" a="255"/>

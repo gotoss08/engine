@@ -13,7 +13,7 @@ class MainMenuScreen : public Screen {
     TextRenderer* text;
 
    public:
-    MainMenuScreen(SDL_Renderer* _renderer, Config* _config, Data* _data);
+    MainMenuScreen(SDL_Renderer* _renderer, TextRenderer* _text_renderer, Config* _config, Data* _data);
     ~MainMenuScreen();
 
     void Update(ScreenUpdateEvent event);
