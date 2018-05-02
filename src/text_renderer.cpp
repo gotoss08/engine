@@ -57,12 +57,12 @@ int TextRenderer::GenerateCharacterMap() {
         return -1;
 }
 
-void TextRenderer::Render(std::string font_name, int x, int y, std::string text, SDL_Color color) {
-    std::string font_name_tag = "font_name";
+RenderedTextMetrics TextRenderer::Render(std::string font_name, int x, int y, std::string text, SDL_Color color) {
+    RenderedTextMetrics renderedTextMetrics;
+    renderedTextMetrics.x = x;
+    renderedTextMetrics.y = y;
 
-    std::string current_font_name = font_name;
-    SDL_Color current_color = color;
-
+    // tags stuff
     std::map<int, std::vector<std::string>> tag_map;
 
     std::string open_tag = "${";
@@ -71,6 +71,7 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
     size_t tag_cursor_position = 0;
     size_t open_tag_position;
 
+    // process all tags from text to map
     while ((open_tag_position = text.find_first_of(open_tag, tag_cursor_position)) != std::string::npos) {
         tag_cursor_position = open_tag_position;
 
@@ -106,16 +107,7 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
         text.erase(open_tag_position, (close_tag_position + close_tag.size()) - open_tag_position);
     }
 
-    // for (auto &tag_pair : tag_map)
-    // {
-    // 	std::string tags_debug_str = "";
-    // 	for (const std::string &tag_str : tag_pair.second)
-    // 	{
-    // 		tags_debug_str += fmt::format("tag[{}]; ", tag_str);
-    // 	}
-    // 	LOG_F(INFO, "tags at index {}: {}", tag_pair.first, tags_debug_str);
-    // }
-
+    // calculate text width and add wordwrap tags if needed
     int window_width = stoi(config->Get("window-width"));
 
     int text_width = 0;
@@ -123,12 +115,14 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
     int current_text_max_width =
         text_target_width == -1 ? window_width - x - padding_left - padding_right : text_target_width - padding_left - padding_right;
 
+    renderedTextMetrics.width = current_text_max_width;
+
     std::string newline_tag = "newline";
 
     for (unsigned int i = 0; i < text.size(); i++) {
         char ch = text[i];
 
-        CharacterMetrics character_metrics = char_metrics_map[current_font_name][ch];
+        CharacterMetrics character_metrics = char_metrics_map[font_name][ch];
 
         // if there is alreay a new line tag at this position reset current width
         if (tag_map.find(i) != tag_map.end() && !tag_map[i].empty())
@@ -146,7 +140,7 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
                 for (int j = i; j >= 0; j--) {
                     ch = text[j];
 
-                    character_metrics = char_metrics_map[current_font_name][ch];
+                    character_metrics = char_metrics_map[font_name][ch];
                     newline_text_width += character_metrics.advance;
 
                     if (ch == ' ') {
@@ -168,6 +162,7 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
     }
 
     // render text
+    SDL_Color current_color = color;
     int text_render_cursor_x_begining = x + padding_left;
     int text_render_cursor_x = text_render_cursor_x_begining;
     int line_index = 0;
@@ -235,11 +230,13 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
 
         if (!render_this_char) continue;
 
-        CharacterMetrics character_metrics = char_metrics_map[current_font_name][ch];
+        CharacterMetrics character_metrics = char_metrics_map[font_name][ch];
 
-        SDL_Texture *char_texture = chars_map[current_font_name][ch];
+        renderedTextMetrics.height = character_metrics.line_height + line_index * character_metrics.line_height;
+
+        SDL_Texture *char_texture = chars_map[font_name][ch];
         if (!char_texture || char_texture == NULL)
-            LOG_F(ERROR, "could not find pre-generated texture for character '{}' in font '{}'", ch, current_font_name);
+            LOG_F(ERROR, "could not find pre-generated texture for character '{}' in font '{}'", ch, font_name);
 
         SDL_Rect char_rect;
         char_rect.x = text_render_cursor_x + character_metrics.minx;
@@ -253,4 +250,6 @@ void TextRenderer::Render(std::string font_name, int x, int y, std::string text,
 
         text_render_cursor_x += character_metrics.advance;
     }
+
+    return renderedTextMetrics;
 }

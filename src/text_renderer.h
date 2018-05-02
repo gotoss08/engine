@@ -35,6 +35,13 @@ struct CharacterMetrics {
     int descent;
 };
 
+struct RenderedTextMetrics {
+    int x;
+    int y;
+    int width;
+    int height;
+};
+
 class TextRenderer {
     bool successfull_load = true;
 
@@ -59,7 +66,7 @@ class TextRenderer {
     virtual ~TextRenderer();
 
     int GenerateCharacterMap();
-    void Render(std::string, int, int, std::string, SDL_Color);
+    RenderedTextMetrics Render(std::string, int, int, std::string, SDL_Color);
 
     SDL_Renderer *GetRenderer() { return renderer; }
     void SetRenderer(SDL_Renderer *_renderer) { renderer = _renderer; }
