@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     loguru::init(argc, argv);
     loguru::add_file("log.txt", loguru::Truncate, loguru::Verbosity_MAX);
 
-    Engine *engine = Engine::getInstance();
+    Engine *engine = new Engine();
 
     if (engine->Init("engine_x64") != 0) {
         LOG_F(ERROR, "Unable to initialize engine.");

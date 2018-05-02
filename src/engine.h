@@ -18,13 +18,14 @@
 
 #include "config.h"
 #include "data.h"
+#include "screen.h"
+#include "screen_main_menu.h"
 #include "text_renderer.h"
 #include "util.h"
 
 class Engine {
    private:
-    static Engine *instance;
-    Engine();
+    bool successfull_load = true;
 
     Config *config;
     Data *data;
@@ -36,26 +37,28 @@ class Engine {
     SDL_Renderer *renderer;
 
     bool running = true;
-    SDL_Event event;
 
     int fps;
     int ups;
 
-    bool successfull_load = true;
-
-    void update();
-    void render();
-
+    Screen *screen;
    public:
-    virtual ~Engine();
-    static Engine *getInstance();
+    Engine();
+    ~Engine();
+
     int Init(std::string);
     int Loop(int, int);
+
     SDL_Window *GetWindow() { return window; }
     SDL_Renderer *GetRenderer() { return renderer; }
     bool IsRunning() { return running; }
     int GetFps() { return fps; }
     int GetUps() { return ups; }
+
+    void SetScreen(Screen* _screen) {
+        screen = _screen;
+        screen->Init();
+    }
 };
 
 #endif /* ENGINE_H_ */

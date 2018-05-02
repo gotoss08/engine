@@ -68,6 +68,9 @@ int Engine::Init(std::string title) {
         successfull_load = false;
     }
 
+    // set start screen to main menu screen
+    SetScreen(new MainMenuScreen());
+
     /* if no errors proceed */
     if (successfull_load)
         return 0;
@@ -104,8 +107,39 @@ int Engine::Loop(int _fps, int _ups) {
 
         while (lag >= tick_timestep) {
             lag -= tick_timestep;
-            update();
             ticks++;
+
+            ScreenUpdateEvent screenEvent;
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_WINDOWEVENT) {
+                    switch (event.window.event) {
+                        case SDL_WINDOWEVENT_RESIZED:
+                            config->Set("window-width", std::to_string(event.window.data1));
+                            config->Set("window-height", std::to_string(event.window.data2));
+                            break;
+                    }
+                } else if (event.type == SDL_QUIT) {
+                    running = false;
+                } else if (event.type == SDL_KEYDOWN) {
+                    screenEvent.keyEvents.push_back(ScreenKeyEvent{event.key.state, event.key.repeat, event.key.keysym.sym});
+
+                    switch (event.key.keysym.sym) {
+                        case SDLK_ESCAPE:
+                            running = false;
+                            break;
+                    }
+                } else if (event.type == SDL_MOUSEMOTION) {
+                    screenEvent.moveEvents.push_back(ScreenMouseMoveEvent{event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel});
+                } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                    screenEvent.clickEvents.push_back(
+                        ScreenMouseClickEvent{event.button.button, event.button.state, event.button.clicks, event.button.x, event.button.y});
+                } else if (event.type == SDL_MOUSEWHEEL) {
+                    screenEvent.scroll = event.wheel.y;
+                }
+            }
+
+            screen->Update(screenEvent);
         }
 
         SDL_Color clear_color = data->Color("clear_color");
@@ -113,14 +147,15 @@ int Engine::Loop(int _fps, int _ups) {
         SDL_SetRenderDrawColor(renderer, clear_color.r, clear_color.g, clear_color.b, clear_color.a);
         SDL_RenderClear(renderer);
 
-        render();
+        // render here
+        screen->Draw(renderer, delta_time.count());
 
         frames++;
 
         auto frame_render_time = std::chrono::duration_cast<std::chrono::nanoseconds>(clock::now() - time_start);
 
         if (std::chrono::duration_cast<std::chrono::seconds>(clock::now() - timer).count() >= 1) {
-            LOG_F(INFO, "frames: {}, ticks: {} | per second", frames, ticks);
+            LOG_F(INFO, "frames: {}, ticks: {}", frames, ticks);
             fps_text = fmt::format(
                 "${{color_name=fps_color_value}}{} ${{color_name=fps_color_text}}fps | ${{color_name=fps_color_value}}{} "
                 "${{color_name=fps_color_text}}ms frame render time",
@@ -131,7 +166,7 @@ int Engine::Loop(int _fps, int _ups) {
             frames = 0;
         }
 
-        text->Render("debug_font", 7, 7, fps_text, data->Color("fps_color"));
+        text->Render("debug_font", 7, 7, fps_text, data->Color("fps_color_text"));
 
         SDL_RenderPresent(renderer);
 
@@ -140,37 +175,6 @@ int Engine::Loop(int _fps, int _ups) {
         }
     }
     return 0;
-}
-
-void Engine::update() {
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_WINDOWEVENT) {
-            switch (event.window.event) {
-                case SDL_WINDOWEVENT_RESIZED:
-                    config->Set("window-width", std::to_string(event.window.data1));
-                    config->Set("window-height", std::to_string(event.window.data2));
-                    break;
-            }
-        }
-        if (event.type == SDL_QUIT) running = false;
-        if (event.type == SDL_KEYDOWN) {
-            switch (event.key.keysym.sym) {
-                case SDLK_ESCAPE:
-                    running = false;
-                    break;
-            }
-        }
-    }
-}
-
-void Engine::render() {}
-
-Engine *Engine::instance = 0;
-Engine *Engine::getInstance() {
-    if (instance == 0) {
-        instance = new Engine();
-    }
-    return instance;
 }
 
 Engine::Engine() {}
