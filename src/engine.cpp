@@ -69,7 +69,7 @@ int Engine::Init(std::string title) {
     }
 
     // set start screen to main menu screen
-    SetScreen(new MainMenuScreen());
+    SetScreen(new MainMenuScreen(renderer, config, data));
 
     /* if no errors proceed */
     if (successfull_load)
@@ -148,7 +148,7 @@ int Engine::Loop(int _fps, int _ups) {
         SDL_RenderClear(renderer);
 
         // render here
-        screen->Draw(renderer, delta_time.count());
+        screen->Draw(delta_time.count());
 
         frames++;
 
@@ -183,6 +183,7 @@ Engine::~Engine() {
     delete config;
     delete data;
     delete text;
+    delete screen;
 
     // core sdl stuff
     TTF_Quit();

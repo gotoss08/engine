@@ -14,7 +14,7 @@ data.o: data.cpp data.h
 text_renderer.o: text_renderer.cpp text_renderer.h
 	$(TRANSLATE_TO_OBJ) text_renderer.cpp
 
-screen_main_menu.o: screen_main_menu.cpp screen_main_menu.h
+screen_main_menu.o: screen.h screens.h screen_main_menu.cpp screen_main_menu.h
 	$(TRANSLATE_TO_OBJ) screen_main_menu.cpp
 
 engine.o: engine.cpp engine.h

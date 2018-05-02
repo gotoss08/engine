@@ -1,7 +1,17 @@
 #include "screen_main_menu.h"
 
-void MainMenuScreen::Init() { LOG_F(INFO, "Main menu screen initiliazed."); }
+MainMenuScreen::MainMenuScreen(SDL_Renderer* _renderer, Config* _config, Data* _data) {
+    renderer = _renderer;
+    config = _config;
+    data = _data;
+
+    text = new TextRenderer(renderer, config, data);
+
+    LOG_F(INFO, "Main menu screen initiliazed.");
+}
+
+MainMenuScreen::~MainMenuScreen() {}
 
 void MainMenuScreen::Update(ScreenUpdateEvent event) {}
 
-void MainMenuScreen::Draw(SDL_Renderer* renderer, int delta) {}
+void MainMenuScreen::Draw(int delta) {}

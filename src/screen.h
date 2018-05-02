@@ -5,6 +5,9 @@
 
 #include <SDL2/SDL.h>
 
+#include "config.h"
+#include "data.h"
+
 struct ScreenKeyEvent {
     Uint8 state;
     Uint8 repeat;
@@ -37,9 +40,13 @@ class Screen {
    public:
     Screen() {}
     virtual ~Screen() {}
-    virtual void Init() = 0;
     virtual void Update(ScreenUpdateEvent event) = 0;
-    virtual void Draw(SDL_Renderer* renderer, int delta) = 0;
+    virtual void Draw(int delta) = 0;
+
+   protected:
+    Config* config;
+    Data* data;
+    SDL_Renderer* renderer;
 };
 
 #endif /* SCREEN_H_ */

@@ -42,6 +42,7 @@ class Engine {
     int ups;
 
     Screen *screen;
+
    public:
     Engine();
     ~Engine();
@@ -55,9 +56,8 @@ class Engine {
     int GetFps() { return fps; }
     int GetUps() { return ups; }
 
-    void SetScreen(Screen* _screen) {
+    void SetScreen(Screen *_screen) {
         screen = _screen;
-        screen->Init();
     }
 };
 

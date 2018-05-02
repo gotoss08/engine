@@ -52,4 +52,13 @@
         "**/*.dll": true,
         "**/*.o": true,
     },
+    "path-autocomplete.extensionOnImport": true,
+    "path-autocomplete.excludedItems": {
+        "**/*.o": {
+            "when": "**"
+        },
+        "**/*.cpp": {
+            "when": "**"
+        }
+    }
 }
