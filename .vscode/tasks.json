@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "mingw32-make.exe",
             "problemMatcher": []
-        }
+        },
         {
             "label": "run engine64.exe",
             "type": "shell",
