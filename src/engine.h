@@ -56,9 +56,7 @@ class Engine {
     int GetFps() { return fps; }
     int GetUps() { return ups; }
 
-    void SetScreen(Screen *_screen) {
-        screen = _screen;
-    }
+    void SetScreen(Screen *_screen) { screen = _screen; }
 };
 
 #endif /* ENGINE_H_ */

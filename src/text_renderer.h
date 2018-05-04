@@ -35,6 +35,8 @@ struct CharacterMetrics {
     int descent;
 };
 
+enum TextAlignment { Left, Center, Right };
+
 struct RenderedTextMetrics {
     int x;
     int y;
@@ -52,7 +54,8 @@ class TextRenderer {
 
     std::string CHARACTERS =
         "!\"#$%&'()*+,-./"
-        "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`‘’abcdefghijklmnopqrstuvwxyz{|}~"
+        "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
+        "‘’abcdefghijklmnopqrstuvwxyz{|}~"
         "ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙúÛüÝÞßàáâãäå¸æçèéêëìíîïðñòóôõö÷øùûýþÿ ";
     std::map<std::string, std::map<char, SDL_Texture *>> chars_map;
     std::map<std::string, std::map<char, CharacterMetrics>> char_metrics_map;
@@ -72,7 +75,9 @@ class TextRenderer {
     void SetRenderer(SDL_Renderer *_renderer) { renderer = _renderer; }
 
     int GetTextTargetWidth() { return text_target_width; }
-    void SetTextTargetWidth(int _text_target_width) { text_target_width = _text_target_width; }
+    void SetTextTargetWidth(int _text_target_width) {
+        text_target_width = _text_target_width;
+    }
 
     // TODO: write getters&setters for each padding
     void SetPadding(int _pl, int _pr, int _pt, int _pb) {

@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-
 #include "libs/loguru.hpp"
 
 #include "config.h"
@@ -13,14 +12,14 @@
 #include "screen.h"
 #include "text_renderer.h"
 
-
 class MainMenuScreen : public Screen {
    private:
     TextRenderer* text_renderer;
     ListWidget* list_widget;
 
    public:
-    MainMenuScreen(SDL_Renderer* _renderer, TextRenderer* _text_renderer, Config* _config, Data* _data);
+    MainMenuScreen(SDL_Renderer* _renderer, TextRenderer* _text_renderer,
+                   Config* _config, Data* _data);
     ~MainMenuScreen();
 
     void Update(ScreenUpdateEvent event);

@@ -4,7 +4,9 @@ void Start() { LOG_F(INFO, "START"); }
 
 void Quit() { LOG_F(INFO, "QUIT"); }
 
-MainMenuScreen::MainMenuScreen(SDL_Renderer* _renderer, TextRenderer* _text_renderer, Config* _config, Data* _data) {
+MainMenuScreen::MainMenuScreen(SDL_Renderer* _renderer,
+                               TextRenderer* _text_renderer, Config* _config,
+                               Data* _data) {
     renderer = _renderer;
     config = _config;
     data = _data;
@@ -41,8 +43,10 @@ void MainMenuScreen::Update(ScreenUpdateEvent event) {
 }
 
 void MainMenuScreen::Draw(int delta) {
-    // text_renderer->Render("glyph_font", 15, 75, "Main Menu", data->Color("main_menu_text"));
-    // text_renderer->Render("glyph_font", 15, 100, "Start", data->Color("main_menu_text_selected"));
-    // text_renderer->Render("glyph_font", 15, 125, "Quit", data->Color("main_menu_text"));
+    // text_renderer->Render("glyph_font", 15, 75, "Main Menu",
+    // data->Color("main_menu_text")); text_renderer->Render("glyph_font", 15,
+    // 100, "Start", data->Color("main_menu_text_selected"));
+    // text_renderer->Render("glyph_font", 15, 125, "Quit",
+    // data->Color("main_menu_text"));
     list_widget->Render();
 }

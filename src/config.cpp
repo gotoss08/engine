@@ -27,4 +27,6 @@ int Config::Load() {
 
 std::string Config::Get(std::string key) { return (options_map[key.c_str()]); }
 
-void Config::Set(std::string key, std::string value) { options_map[key.c_str()] = value; }
+void Config::Set(std::string key, std::string value) {
+    options_map[key.c_str()] = value;
+}

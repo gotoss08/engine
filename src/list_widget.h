@@ -10,7 +10,7 @@
 
 struct ListWidgetItem {
     std::string text;
-    void(*action)();
+    void (*action)();
 };
 
 class ListWidget {
@@ -29,8 +29,10 @@ class ListWidget {
     int vertical_spacing = 7;
 
     int item_index = 0;
+
    public:
-    ListWidget(TextRenderer* _text_renderer, int _x, int _y, std::vector<ListWidgetItem> _list_items);
+    ListWidget(TextRenderer* _text_renderer, int _x, int _y,
+               std::vector<ListWidgetItem> _list_items);
     void Render();
     void Update();
     void Up();

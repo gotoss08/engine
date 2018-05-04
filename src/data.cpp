@@ -7,7 +7,8 @@
 
 #include "data.h"
 
-void Data::load_font(std::string font_name, std::string font_path, int font_size) {
+void Data::load_font(std::string font_name, std::string font_path,
+                     int font_size) {
     TTF_Font *temp_font = TTF_OpenFont(font_path.c_str(), font_size);
     if (!temp_font) {
         LOG_F(ERROR, "Unable to load font: {}({})", font_path, font_size);
@@ -16,13 +17,16 @@ void Data::load_font(std::string font_name, std::string font_path, int font_size
     TTF_SetFontHinting(temp_font, 1);
     TTF_SetFontKerning(temp_font, 1);
     fonts_map.insert(std::make_pair(font_name, temp_font));
-    std::cout << "loaded font: " << font_name << "(" << temp_font << ")" << std::endl;
+    std::cout << "loaded font: " << font_name << "(" << temp_font << ")"
+              << std::endl;
 }
 
 int Data::Load(std::string data_doc_path) {
     pugi::xml_document data_doc;
-    pugi::xml_parse_result doc_parse_result = data_doc.load_file(data_doc_path.c_str());
-    LOG_F(INFO, "data document load status: {}", doc_parse_result.description());
+    pugi::xml_parse_result doc_parse_result =
+        data_doc.load_file(data_doc_path.c_str());
+    LOG_F(INFO, "data document load status: {}",
+          doc_parse_result.description());
     if (!doc_parse_result) successfull_load = false;
 
     pugi::xml_node fonts_node = data_doc.child("fonts");

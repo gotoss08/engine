@@ -11,8 +11,12 @@ int Engine::Init(std::string title) {
     config = new Config();
     config->Load();
 
-    Engine::width = is_number(config->Get("window-width")) ? std::stoi(config->Get("window-width").c_str()) : 640;
-    Engine::height = is_number(config->Get("window-height")) ? std::stoi(config->Get("window-height").c_str()) : 480;
+    Engine::width = is_number(config->Get("window-width"))
+                        ? std::stoi(config->Get("window-width").c_str())
+                        : 640;
+    Engine::height = is_number(config->Get("window-height"))
+                         ? std::stoi(config->Get("window-height").c_str())
+                         : 480;
 
     /* sdl2 lib initialization */
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -33,12 +37,19 @@ int Engine::Init(std::string title) {
     }
 
     /* window creating */
-    Uint32 window_resizable_flag = config->Get("resizable") == "true" ? SDL_WINDOW_RESIZABLE : 0;
-    Uint32 window_fullscreen_flag = config->Get("display-mode") == "fullscreen" ? SDL_WINDOW_FULLSCREEN : 0;
-    Uint32 window_borderless_flag = config->Get("display-mode") == "borderless" ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+    Uint32 window_resizable_flag =
+        config->Get("resizable") == "true" ? SDL_WINDOW_RESIZABLE : 0;
+    Uint32 window_fullscreen_flag =
+        config->Get("display-mode") == "fullscreen" ? SDL_WINDOW_FULLSCREEN : 0;
+    Uint32 window_borderless_flag = config->Get("display-mode") == "borderless"
+                                        ? SDL_WINDOW_FULLSCREEN_DESKTOP
+                                        : 0;
 
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
-                              SDL_WINDOW_OPENGL | window_resizable_flag | window_fullscreen_flag | window_borderless_flag);
+    window =
+        SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
+                         SDL_WINDOWPOS_UNDEFINED, width, height,
+                         SDL_WINDOW_OPENGL | window_resizable_flag |
+                             window_fullscreen_flag | window_borderless_flag);
     if (window == NULL) {
         LOG_F(ERROR, "Unable to create window: %s\n", SDL_GetError());
         successfull_load = false;
@@ -115,14 +126,18 @@ int Engine::Loop(int _fps, int _ups) {
                 if (event.type == SDL_WINDOWEVENT) {
                     switch (event.window.event) {
                         case SDL_WINDOWEVENT_RESIZED:
-                            config->Set("window-width", std::to_string(event.window.data1));
-                            config->Set("window-height", std::to_string(event.window.data2));
+                            config->Set("window-width",
+                                        std::to_string(event.window.data1));
+                            config->Set("window-height",
+                                        std::to_string(event.window.data2));
                             break;
                     }
                 } else if (event.type == SDL_QUIT) {
                     running = false;
                 } else if (event.type == SDL_KEYDOWN) {
-                    screenEvent.keyEvents.push_back(ScreenKeyEvent{event.key.state, event.key.repeat, event.key.keysym.sym});
+                    screenEvent.keyEvents.push_back(
+                        ScreenKeyEvent{event.key.state, event.key.repeat,
+                                       event.key.keysym.sym});
 
                     switch (event.key.keysym.sym) {
                         case SDLK_ESCAPE:
@@ -130,10 +145,13 @@ int Engine::Loop(int _fps, int _ups) {
                             break;
                     }
                 } else if (event.type == SDL_MOUSEMOTION) {
-                    screenEvent.moveEvents.push_back(ScreenMouseMoveEvent{event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel});
+                    screenEvent.moveEvents.push_back(ScreenMouseMoveEvent{
+                        event.motion.x, event.motion.y, event.motion.xrel,
+                        event.motion.yrel});
                 } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                    screenEvent.clickEvents.push_back(
-                        ScreenMouseClickEvent{event.button.button, event.button.state, event.button.clicks, event.button.x, event.button.y});
+                    screenEvent.clickEvents.push_back(ScreenMouseClickEvent{
+                        event.button.button, event.button.state,
+                        event.button.clicks, event.button.x, event.button.y});
                 } else if (event.type == SDL_MOUSEWHEEL) {
                     screenEvent.scroll = event.wheel.y;
                 }
@@ -144,7 +162,8 @@ int Engine::Loop(int _fps, int _ups) {
 
         SDL_Color clear_color = data->Color("clear_color");
 
-        SDL_SetRenderDrawColor(renderer, clear_color.r, clear_color.g, clear_color.b, clear_color.a);
+        SDL_SetRenderDrawColor(renderer, clear_color.r, clear_color.g,
+                               clear_color.b, clear_color.a);
         SDL_RenderClear(renderer);
 
         // render here
@@ -152,26 +171,38 @@ int Engine::Loop(int _fps, int _ups) {
 
         frames++;
 
-        auto frame_render_time = std::chrono::duration_cast<std::chrono::nanoseconds>(clock::now() - time_start);
+        auto frame_render_time =
+            std::chrono::duration_cast<std::chrono::nanoseconds>(clock::now() -
+                                                                 time_start);
 
-        if (std::chrono::duration_cast<std::chrono::seconds>(clock::now() - timer).count() >= 1) {
+        if (std::chrono::duration_cast<std::chrono::seconds>(clock::now() -
+                                                             timer)
+                .count() >= 1) {
             LOG_F(INFO, "frames: {}, ticks: {}", frames, ticks);
             fps_text = fmt::format(
-                "${{color_name=fps_color_value}}{} ${{color_name=fps_color_text}}fps | ${{color_name=fps_color_value}}{} "
+                "${{color_name=fps_color_value}}{} "
+                "${{color_name=fps_color_text}}fps | "
+                "${{color_name=fps_color_value}}{} "
                 "${{color_name=fps_color_text}}ms frame render time",
-                frames, std::chrono::duration_cast<std::chrono::milliseconds>(frame_render_time).count());
+                frames,
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    frame_render_time)
+                    .count());
 
             timer = clock::now();
             ticks = 0;
             frames = 0;
         }
 
-        text->Render("debug_font", 7, 7, fps_text, data->Color("fps_color_text"));
+        text->Render("debug_font", 7, 7, fps_text,
+                     data->Color("fps_color_text"));
 
         SDL_RenderPresent(renderer);
 
         if (frame_timestep > frame_render_time) {
-            SDL_Delay(std::chrono::duration_cast<std::chrono::milliseconds>(frame_timestep - frame_render_time).count());
+            SDL_Delay(std::chrono::duration_cast<std::chrono::milliseconds>(
+                          frame_timestep - frame_render_time)
+                          .count());
         }
     }
     return 0;
