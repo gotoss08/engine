@@ -62,6 +62,7 @@ class TextRenderer {
 
     int text_target_width;
     int padding_left, padding_right, padding_top, padding_bottom;
+    TextAlignment text_alignment = TextAlignment::Left;
     bool wordwrap, charwrap;
 
    public:
@@ -69,6 +70,7 @@ class TextRenderer {
     virtual ~TextRenderer();
 
     int GenerateCharacterMap();
+    RenderedTextMetrics testRender(std::string, int, int, std::string, SDL_Color);
     RenderedTextMetrics Render(std::string, int, int, std::string, SDL_Color);
 
     SDL_Renderer *GetRenderer() { return renderer; }
@@ -88,10 +90,16 @@ class TextRenderer {
     }
 
     bool IsWordwrap() { return wordwrap; }
-    void SetWordwrap(bool _wordwrap) { wordwrap = _wordwrap; }
+    void SetWordwrap(bool _wordwrap) {
+        wordwrap = _wordwrap;
+        LOG_F(INFO, "wordwrap enabled: {}", wordwrap);
+    }
 
     bool IsCharwrap() { return charwrap; }
-    void SetCharwrap(bool _charwrap) { charwrap = _charwrap; }
+    void SetCharwrap(bool _charwrap) {
+        charwrap = _charwrap;
+        LOG_F(INFO, "charwrap enabled: {}", charwrap);
+    }
 };
 
 #endif /* TEXT_RENDERER_H_ */
